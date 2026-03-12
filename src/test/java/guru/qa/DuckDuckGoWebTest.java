@@ -28,57 +28,63 @@ public class DuckDuckGoWebTest {
     Configuration.holdBrowserOpen = true;  // После выполнения теста, браузер не закрывается автоматически.
 
   }
-
+  // открытие страницы перед каждым тестом
   @BeforeEach
   void setUp() {
     open("https://duckduckgo.com/");
   }
 
-
+// "ValueSource" - один тест - много данных
   @ValueSource(strings = {
       "Selenide", "JUnit 5", "Allure"
   })
 
-
+  // тесты
+  // "ParameterizedTest" - один тест - много данных
   @ParameterizedTest(name = "Для поискового запроса {0} должен отдавать не пустой список карточек")
   @Tag("BLOCKER")
   void searchResultsShouldNotBeEmpty(String searchQuery) {
     $("#searchbox_input").setValue(searchQuery).pressEnter();
     $$("[data-testid='mainline'] li[data-layout='organic']")
-        .shouldBe(sizeGreaterThan(0));
+        .shouldBe(sizeGreaterThan(0)); // проверка, что коллекция не пустая
   }
 
+
+// "CsvSource" - данные можно хранить в таблице или в файле
   @CsvSource(value = {
       "Selenide , https://selenide.org",
       "JUnit 5 , https://junit.org"
   })
+
+// данные можно хранить в таблице или в файле "CsvFileSource"
   @CsvFileSource(resources = "/testData/searchResultsShouldContainExpectedUrl.csv")
   @ParameterizedTest(name = "Для поискового запроса {0} в первой карточке должна быть ссылка {1}")
-  @Tag("BLOCKER")
+  @Tag("BLOCKER") // высокий приоритет
   void searchResultsShouldContainExpectedUrl(String searchQuery, String expectedLink) {
     $("#searchbox_input").setValue(searchQuery).pressEnter();
     $("[data-testid='mainline'] li[data-layout='organic']")
-        .shouldHave(text(expectedLink));
+        .shouldHave(text(expectedLink)); // проверка, что коллекция не пустая
   }
 
+
   @Test
-  @Tag("BLOCKER")
+  @Tag("BLOCKER") // высокий приоритет
   @DisplayName("Для поискового запроса 'junit 5' должен отдавать не пустой список карточек")
   void successfulSearchJUnitTest() {
     $("#searchbox_input").setValue("junit 5").pressEnter();
     $$("[data-testid='mainline'] li[data-layout='organic']")
-        .shouldBe(sizeGreaterThan(0));
+        .shouldBe(sizeGreaterThan(0)); // проверка, что коллекция не пустая
   }
 
 
   @Test
-  @Tag("BLOCKER")
+  @Tag("BLOCKER") // высокий приоритет
   @DisplayName("Для поискового запроса 'selenide' должен показываться не пустой список фото")
   void successfulSearchPhotoTest() {
     $("#searchbox_input").setValue("selenide").pressEnter();
     $("[data-zci-link='images']").click();
     $$("img.tile--img__img")
-        .shouldBe(sizeGreaterThan(0));
+        .shouldBe(sizeGreaterThan(0)); // проверка, что коллекция не пустая
   }
 }
 

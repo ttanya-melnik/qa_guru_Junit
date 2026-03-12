@@ -1,5 +1,7 @@
 package guru.qa.data;
 
+
+// Обычный immutable объект (record-подобный класс) с двумя полями: имя и возраст.
 public class Person {
 
   private final String name;

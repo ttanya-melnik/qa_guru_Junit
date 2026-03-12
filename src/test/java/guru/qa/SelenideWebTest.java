@@ -19,7 +19,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class SelenideWebTest {
 
 
+// Оба теста делают примерно одно и то же:
 
+//Открывают русскую версию сайта → https://ru.selenide.org/
+//Переключают язык (нажимают на ссылку с нужным языком)
+//Проверяют, что после переключения появились правильные тексты
+
+
+
+  // @EnumSource(Language.class) → берёт все значения из enum Language
+  // Для каждого языка тест запускается отдельно
   @EnumSource(Language.class)
   @ParameterizedTest
   void selenideSiteShouldDisplayCorrectText(Language language) {
@@ -28,6 +37,14 @@ public class SelenideWebTest {
     $("h3").shouldHave(text(language.description));
   }
 
+
+
+
+
+  // После переключения языка проверяет весь список пунктов главного меню:
+
+  //для английского → "Quick start", "Docs", "FAQ", "Blog", "Javadoc", "Users", "Quotes"
+  //для русского → "С чего начать?", "Док", "ЧАВО", "Блог", "Javadoc", "Пользователи", "Отзывы"
   static Stream<Arguments> selenideSiteShouldDisplayCorrectButtons() {
     return Stream.of(
         Arguments.of(
