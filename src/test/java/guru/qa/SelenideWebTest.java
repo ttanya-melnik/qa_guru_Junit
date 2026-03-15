@@ -55,6 +55,7 @@ public class SelenideWebTest {
             new Person("Valentin", 35)));
   }
 
+  //  @MethodSource - Фабричный метод должен генерировать поток аргументов.
   @MethodSource
   @ParameterizedTest
   void selenideSiteShouldDisplayCorrectButtons(Language language, List<String> expectedButtons, Person person) {
